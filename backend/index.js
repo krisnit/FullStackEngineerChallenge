@@ -9,6 +9,9 @@ app.get("/", (req, res) => {
   res.send({ name: "rk" });
 });
 
+//parsing middleware
+app.use(express.json({ extended: false }));
+
 //routes
 app.use("/api/users", require("./routes/apis/users"));
 app.use("/api/reviews", require("./routes/apis/reviews"));
