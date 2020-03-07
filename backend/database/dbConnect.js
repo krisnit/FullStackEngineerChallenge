@@ -3,13 +3,17 @@ const config = require("config");
 
 const mongouri = config.get("mongouri");
 
-const dbConnection = async () => {
+const dbConnect = async () => {
   try {
-    await mongoose.connect(mongouri);
+    await mongoose.connect(mongouri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("mongodb connected");
   } catch (err) {
     console.log("Error in connection", err);
     process.exit(1);
   }
 };
 
-module.exports = dbConnection;
+module.exports = dbConnect;
