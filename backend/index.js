@@ -15,6 +15,6 @@ app.use("/api/reviews", require("./routes/apis/reviews"));
 app.use("/api/feedback", require("./routes/apis/feedback"));
 app.use("/api/auth", require("./routes/apis/auth"));
 
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log("running in port " + port));
