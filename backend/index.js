@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const dbConnect = require("./database/dbConnect");
+const cors = require("cors");
 
 //connect to DB
 dbConnect();
@@ -10,6 +11,7 @@ app.get("/", (req, res) => {
 });
 
 //parsing middleware
+app.use(cors());
 app.use(express.json({ extended: false }));
 
 //routes
