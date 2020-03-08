@@ -11,6 +11,7 @@ const reviewSchema = new mongoose.Schema({
   innovation: {
     type: String
   },
+  isComplete: { type: Boolean, default: false },
   feedbacks: [
     {
       user: { type: Schema.Types.ObjectId, ref: "users" },

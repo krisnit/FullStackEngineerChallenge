@@ -13,6 +13,19 @@ router.post("/", adminauth, async (req, res) => {
     if (!getUser) {
       return res.status(400).send({ msg: "No such user exists" });
     }
+    let reviews = await Reviews.find().select(["user", "isComplete"]);
+    // check if the user is already having a pending performce review .
+    if (
+      reviews.find(
+        ({ isComplete, user }) =>
+          user.toString() === req.body.user && !isComplete
+      )
+    ) {
+      return res
+        .status(400)
+        .send({ msg: "User already has one performance review pending" });
+    }
+    //if no performance review is pending then create new one
     let review = new Reviews({
       user,
       achievements,
