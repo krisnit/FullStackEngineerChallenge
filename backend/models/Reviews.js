@@ -11,13 +11,14 @@ const reviewSchema = new mongoose.Schema({
   innovation: {
     type: String
   },
-  comments: [
+  feedbacks: [
     {
       user: { type: Schema.Types.ObjectId, ref: "users" },
-      comment: { type: String, required: true },
+      feedback: { type: String, required: true },
       createdAt: { type: Date, default: Date.now }
     }
   ],
+  editors: [{ type: Schema.Types.ObjectId, ref: "users" }],
   createdAt: { type: Date, default: Date.now }
 });
 
