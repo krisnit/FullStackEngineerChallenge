@@ -10,8 +10,8 @@ module.exports = async function(req, res, next) {
   try {
     const decoded = jwt.verify(token, config.get("jwtsecret"));
     let isAdmin = await User.findById(decoded.user.id).select("admin");
-    if (!isAdmin) {
-      return res.status(401).json({ msg: "Authorisation denied" });
+    if (!isAdmin.admin) {
+      return res.status(401).json({ msg: "Access denied" });
     }
     req.user = decoded.user;
   } catch (err) {
