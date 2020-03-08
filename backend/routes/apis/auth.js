@@ -22,7 +22,6 @@ router.get("/", userauth, async (req, res) => {
 //api/auth to validate existing users who are signing in with email and password
 router.post(
   "/",
-  userauth,
   [
     check("email", "Enter valid email").isEmail(),
     check("password", "Password is required").exists()

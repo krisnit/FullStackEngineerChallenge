@@ -50,10 +50,25 @@ router.get("/", adminauth, async (req, res) => {
 });
 
 //api/reviews/:id - delete a performace review - only admin
-router.delete("/:id", userauth, async (req, res) => {
+router.delete("/:id", adminauth, async (req, res) => {
   try {
     await Reviews.findByIdAndDelete(req.params.id);
     return res.status(200).send({ msg: "deleted the review" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ msg: "server error" });
+  }
+});
+
+//api/reviews/:id - update a performace review - only admin
+router.put("/:id", adminauth, async (req, res) => {
+  let { achievements, innovation } = req.body;
+  try {
+    let review = await Reviews.findById(req.params.id);
+    review.achievements = achievements;
+    review.innovation = innovation;
+    await review.save();
+    return res.status(200).send({ msg: "updated the review" });
   } catch (err) {
     console.log(err);
     return res.status(500).send({ msg: "server error" });
