@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../../middleware/auth");
+const userauth = require("../../middleware/userauth");
 const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 //api/auth - authenticate users
-router.get("/", auth, async (req, res) => {
+router.get("/", userauth, async (req, res) => {
   try {
     let user = await User.findById(req.user.id).select("-password");
     if (user) {
@@ -22,6 +22,7 @@ router.get("/", auth, async (req, res) => {
 //api/auth to validate existing users who are signing in with email and password
 router.post(
   "/",
+  userauth,
   [
     check("email", "Enter valid email").isEmail(),
     check("password", "Password is required").exists()

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = require("mongoose");
 const reviewSchema = new mongoose.Schema({
-  username: { type: Schema.Types.ObjectId, ref: "users" },
+  user: { type: Schema.Types.ObjectId, ref: "users" },
   responsibilites: {
     type: String
   },
