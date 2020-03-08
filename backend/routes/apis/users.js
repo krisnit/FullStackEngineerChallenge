@@ -37,14 +37,14 @@ router.post(
       user = new User({ username, email, password, admin });
       await user.save();
 
+      //create jwt token which will be used for authentication
       let payload = {
         user: { id: user.id }
       };
       jwt.sign(payload, jwtsecret, (err, token) => {
         if (err) throw err;
-       return res.json({ token });
+        return res.json({ token });
       });
-      
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Server error");
