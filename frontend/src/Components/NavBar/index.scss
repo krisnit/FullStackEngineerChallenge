@@ -1,0 +1,16 @@
+.navbar__main {
+  display: flex;
+  padding: 1rem;
+  .navbar__heading {
+    color: blueviolet;
+  }
+  .navbar__links {
+    margin-left: auto;
+    padding-right: 2rem;
+    li {
+      text-decoration: none;
+      list-style: none;
+      font-size: large;
+    }
+  }
+}
