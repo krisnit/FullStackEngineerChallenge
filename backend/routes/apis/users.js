@@ -6,8 +6,9 @@ const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const jwtsecret = config.get("jwtsecret");
+const adminAuth = require('../../middleware/adminauth')
 
-//api/users - which will info of all users
+//api/users - create new user
 router.post(
   "/",
   [
@@ -51,5 +52,16 @@ router.post(
     }
   }
 );
+
+//api/users - get all users
+router.get('/',adminAuth, async (req,res)=>{
+  try{
+  let users= await User.find().select('-password')
+  res.status(200).send({users})}
+  catch(err){
+    console.log(err.message)
+    res.status(500).send({msg:"Internal Server Error"})
+  }
+})
 
 module.exports = router;
