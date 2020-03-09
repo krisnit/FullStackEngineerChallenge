@@ -1,28 +1,23 @@
 import React from "react";
-import axios from "axios";
-
-const Index = () => {
+import { connect } from "react-redux";
+import { loginSuccess } from "../../redux/actionCreators/auth";
+import { Redirect } from "react-router-dom";
+const Index = props => {
   let [details, setDetails] = React.useState({ email: "", password: "" });
   const handleSubmit = async e => {
     e.preventDefault();
-    let config = {
-      headers: { "Content-Type": "application/json" }
-    };
-    let body = JSON.stringify(details);
-    try {
-      let token = await axios.post(
-        "http://localhost:5000/api/auth",
-        body,
-        config
-      );
-      console.log(token);
-    } catch (err) {
-      console.log("error", err.message);
-    }
+    let { email, password } = details;
+    props.loginSuccess(email, password);
   };
   const handleChange = e => {
     setDetails({ ...details, [e.target.name]: e.target.value });
   };
+  if (props.auth.isAuthenticated && props.auth.isAdmin) {
+    return <Redirect to="/admin" />;
+  }
+  if (props.auth.isAuthenticated) {
+    return <Redirect to="/user" />;
+  }
   return (
     <div>
       <h1>Login Page</h1>
@@ -37,4 +32,13 @@ const Index = () => {
   );
 };
 
-export default Index;
+const mapStateToProps = state => {
+  return { auth: state.authReducer };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    loginSuccess: (email, password) => dispatch(loginSuccess(email, password))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
