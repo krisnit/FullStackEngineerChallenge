@@ -6,8 +6,8 @@ const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const jwtsecret = config.get("jwtsecret");
-const adminAuth = require('../../middleware/adminauth')
-
+const adminAuth = require("../../middleware/adminauth");
+const userAuth = require("../../middleware/userauth");
 //api/users - create new user
 router.post(
   "/",
@@ -54,14 +54,39 @@ router.post(
 );
 
 //api/users - get all users
-router.get('/',adminAuth, async (req,res)=>{
-  try{
-  let users= await User.find().select('-password')
-  res.status(200).send({users})}
-  catch(err){
-    console.log(err.message)
-    res.status(500).send({msg:"Internal Server Error"})
+router.get("/", adminAuth, async (req, res) => {
+  try {
+    let users = await User.find().select("-password");
+    res.status(200).send({ users });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ msg: "Internal Server Error" });
   }
-})
+});
+
+//api/users/:id get user profile
+router.get("/:id", userAuth, async (req, res) => {
+  try {
+    let id = req.user.id;
+    let user = await User.findById(id).select("-password");
+    res.status(200).send({ user });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({});
+  }
+});
+
+//api/users/:id - update a user profile
+router.put("/:id", adminAuth, async (req, res) => {
+  try {
+    let id = req.user.id;
+    let user = await User.findByIdAndUpdate(id, { ...req.body });
+    await user.save();
+    res.status(200).send({ user });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({});
+  }
+});
 
 module.exports = router;
