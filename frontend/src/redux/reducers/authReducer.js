@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAILED } from "../actions/types";
+import { LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT } from "../actions/types";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -15,6 +15,8 @@ const authReducer = (state = initialState, action) => {
       return { ...state, ...payload, isAuthenticated: true, loading: false };
     case LOGIN_FAILED:
       return { ...state, ...payload, isAuthenticated: false, loading: false };
+    case LOGOUT:
+      return { ...initialState };
     default:
       return state;
   }

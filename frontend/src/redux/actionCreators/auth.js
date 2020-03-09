@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAILED } from "../actions/types";
+import { LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT } from "../actions/types";
 import axios from "axios";
 import setToken from "../utils/setToken";
 
@@ -20,7 +20,7 @@ export const loginSuccess = (email, password) => async dispatch => {
     dispatch({
       type: LOGIN_SUCCESS,
       payload: {
-        token: token.data,
+        token: token.data.token,
         user: user.data.user._id,
         isAdmin: user.data.user.admin
       }
@@ -36,4 +36,9 @@ export const loginSuccess = (email, password) => async dispatch => {
     });
     console.log("error", err.message);
   }
+};
+
+export const logout = () => dispatch => {
+  localStorage.removeItem("token");
+  return dispatch({ type: LOGOUT });
 };
