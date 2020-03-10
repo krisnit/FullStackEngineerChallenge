@@ -1,0 +1,25 @@
+.employeelist {
+  margin: 1rem;
+  line-height: 1.5;
+  .employeelist__main {
+    display: flex;
+    flex-direction: column;
+    .employeelist__header {
+      display: grid;
+      grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
+      align-items: center;
+    }
+    .employee {
+      display: grid;
+      grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
+      align-items: center;
+      padding: 1rem 0;
+      button {
+        width: 5rem;
+      }
+      input {
+        width: 13rem;
+      }
+    }
+  }
+}

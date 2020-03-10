@@ -80,7 +80,9 @@ router.get("/:id", userAuth, async (req, res) => {
 router.put("/:id", adminAuth, async (req, res) => {
   try {
     let id = req.user.id;
-    let user = await User.findByIdAndUpdate(id, { ...req.body });
+    let user = await User.findByIdAndUpdate(id, { ...req.body }).select(
+      "-password"
+    );
     await user.save();
     res.status(200).send({ user });
   } catch (err) {
