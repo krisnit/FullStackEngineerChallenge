@@ -1,62 +1,14 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import {
-  fetchEmployees,
-  modifyEmployees
-} from "../../redux/actionCreators/admin";
+import { fetchEmployees } from "../../redux/actionCreators/admin";
 import "./FetchEmployees.scss";
 import CreateEmployee from "./CreateEmployee";
+import { withRouter } from "react-router-dom";
 
-const FetchEmployees = ({ fetchEmployees, data, modifyEmployees }) => {
-  let [modify, setModify] = React.useState({
-    state: false,
-    id: null
-  });
-  let [userData, setUserData] = React.useState({
-    id: modify.id,
-    username: null,
-    email: null,
-    admin: null
-  });
-
+const FetchEmployees = ({ fetchEmployees, data, history }) => {
   useEffect(() => {
     fetchEmployees();
   }, [fetchEmployees]);
-
-  const handleChange = e => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
-
-  const handleData = () => {
-    let user = data.findIndex(user => user._id === modify.id);
-    setUserData({ user });
-  };
-
-  let fixed = emp => (
-    <>
-      <div>{userData.username || emp.username}</div>
-      <div>{userData.email || emp.email}</div>
-      <div>{emp.admin ? "Admin" : "User"}</div>
-    </>
-  );
-
-  let modifyData = emp => (
-    <>
-      <input
-        type="text"
-        name="username"
-        onChange={handleChange}
-        defaultValue={userData.username || emp.username}
-      />
-      <input
-        type="text"
-        name="email"
-        onChange={handleChange}
-        defaultValue={userData.email || emp.email}
-      />
-      <div>{emp.admin ? "Admin" : "User"}</div>
-    </>
-  );
 
   return (
     <div className="employeelist">
@@ -74,25 +26,15 @@ const FetchEmployees = ({ fetchEmployees, data, modifyEmployees }) => {
         <div className="employeelist__content">
           {data.map(emp => {
             return (
-              <div key={emp._id} className="employee">
-                {modify.state && modify.id === emp._id
-                  ? modifyData(emp)
-                  : fixed(emp)}
+              <div key={emp._id}>
+                <div>{emp.username}</div>
+                <div>{emp.email}</div>
+                <div>{emp.admin ? "Admin" : "User"}</div>
                 <button
                   onClick={() => {
-                    setModify({ state: !modify.state, id: emp._id });
-                    handleData();
-                    if (modify.state) {
-                      console.log(userData);
-                      // modifyEmployees({
-                      //   id: modify.id,
-                      //   username: modify.username,
-                      //   email: modify.email,
-                      //   admin: modify.admin
-                      // });
-                    }
+                    history.push(`/admin/edit/${emp._id}`);
                   }}>
-                  {modify.state && modify.id === emp._id ? "Save" : "Modify"}
+                  Modify
                 </button>
                 <button>Delete</button>
               </div>
@@ -108,8 +50,10 @@ const mapStateToProps = ({ adminReducer }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchEmployees: () => dispatch(fetchEmployees()),
-  modifyEmployees: data => dispatch(modifyEmployees(data))
+  fetchEmployees: () => dispatch(fetchEmployees())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FetchEmployees);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(FetchEmployees));

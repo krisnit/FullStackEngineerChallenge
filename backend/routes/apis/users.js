@@ -79,11 +79,13 @@ router.get("/:id", userAuth, async (req, res) => {
 //api/users/:id - update a user profile
 router.put("/:id", adminAuth, async (req, res) => {
   try {
-    let id = req.user.id;
+    let id = req.params.id;
+
     let user = await User.findByIdAndUpdate(id, { ...req.body }).select(
       "-password"
     );
     await user.save();
+
     res.status(200).send({ user });
   } catch (err) {
     console.log(err.message);

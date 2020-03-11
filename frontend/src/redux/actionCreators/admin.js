@@ -17,15 +17,18 @@ export const fetchEmployees = () => async dispatch => {
   }
 };
 
-export const modifyEmployees = data => async dispatch => {
+export const modifyEmployee = data => async dispatch => {
   let token = localStorage.getItem("token");
   let config = { headers: { "x-auth-token": token } };
+  let modifiedUser = { username: data.username, email: data.email };
   try {
+    console.log(data, modifiedUser);
     let emp = await axios.put(
-      `http://localhost:5000/api/users/${data.id}`,
-      data,
+      `http://localhost:5000/api/users/${data._id}`,
+      modifiedUser,
       config
     );
+    console.log(emp);
     dispatch({ type: MODIFY_EMPLOYEES, payload: { ...emp } });
   } catch (err) {
     console.log(err.message);

@@ -8,6 +8,7 @@ import AdminRoute from "./Components/Routing/AdminRoute";
 import UserRoute from "./Components/Routing/UserRoute";
 import Admin from "./Components/Admin";
 import User from "./Components/User";
+import ModifyEmployee from "./Components/Employees/ModifyEmployee";
 
 function App() {
   return (
@@ -18,6 +19,11 @@ function App() {
         <section className="container">
           <Switch>
             <Route exact path="/login" component={Login} />
+            <AdminRoute
+              exact
+              path="/admin/edit/:id"
+              component={ModifyEmployee}
+            />
             <AdminRoute exact path="/admin" component={Admin} />
             <UserRoute exact path="/user" component={User} />
           </Switch>
