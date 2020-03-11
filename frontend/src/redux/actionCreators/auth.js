@@ -20,7 +20,6 @@ export const loginSuccess = (email, password) => async dispatch => {
     dispatch({
       type: LOGIN_SUCCESS,
       payload: {
-        token: token.data.token,
         user: user.data.user._id,
         isAdmin: user.data.user.admin
       }
@@ -41,4 +40,31 @@ export const loginSuccess = (email, password) => async dispatch => {
 export const logout = () => dispatch => {
   localStorage.removeItem("token");
   return dispatch({ type: LOGOUT });
+};
+
+export const loginWithToken = () => async dispatch => {
+  let token = localStorage.getItem("token");
+  if (token) {
+    setToken(token);
+    try {
+      let user = await axios.get("http://localhost:5000/api/auth");
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: {
+          user: user.data.user._id,
+          isAdmin: user.data.user.admin
+        }
+      });
+    } catch (err) {
+      localStorage.removeItem("token");
+      dispatch({
+        type: LOGIN_FAILED,
+        payload: {
+          user: null,
+          isAdmin: false
+        }
+      });
+      console.log("error", err.message);
+    }
+  }
 };

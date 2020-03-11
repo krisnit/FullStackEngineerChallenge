@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { loginSuccess } from "../../redux/actionCreators/auth";
+import { loginSuccess, loginWithToken } from "../../redux/actionCreators/auth";
 import { Redirect } from "react-router-dom";
 const Index = props => {
   let [details, setDetails] = React.useState({ email: "", password: "" });
@@ -9,6 +9,9 @@ const Index = props => {
     let { email, password } = details;
     props.loginSuccess(email, password);
   };
+  React.useEffect(() => {
+    props.loginWithToken();
+  }, []);
   const handleChange = e => {
     setDetails({ ...details, [e.target.name]: e.target.value });
   };
@@ -37,7 +40,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    loginSuccess: (email, password) => dispatch(loginSuccess(email, password))
+    loginSuccess: (email, password) => dispatch(loginSuccess(email, password)),
+    loginWithToken: () => dispatch(loginWithToken())
   };
 };
 
