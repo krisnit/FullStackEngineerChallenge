@@ -1,56 +1,79 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchEmployees } from "../../redux/actionCreators/admin";
+import {
+  fetchEmployees,
+  fetchReviewsAll
+} from "../../redux/actionCreators/admin";
 import "./FetchEmployees.scss";
 import CreateEmployee from "./CreateEmployee";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
-const FetchEmployees = ({ fetchEmployees, data, history }) => {
+const FetchEmployees = ({
+  fetchEmployees,
+  fetchReviewsAll,
+  data,
+  history,
+  reviews
+}) => {
   useEffect(() => {
+    fetchReviewsAll();
     fetchEmployees();
-  }, [fetchEmployees]);
+  }, []);
 
   return (
     <div className="employeelist">
       <h1>Welcome to Admin Page</h1>
       <CreateEmployee />
-      <h3 className="employeelist__heading">List of Employees</h3>
+      <h3 className="employeelist__heading">List of Users</h3>
       <div className="employeelist__main">
         <div className="employeelist__header">
           <div>UserName</div>
           <div>Email</div>
-          <div>Status</div>
+          <div>Total Reviews</div>
           <div>Modify</div>
           <div>Delete</div>
         </div>
         <div className="employeelist__content">
-          {data.map(emp => {
-            return (
-              <div key={emp._id}>
-                <div>{emp.username}</div>
-                <div>{emp.email}</div>
-                <div>{emp.admin ? "Admin" : "User"}</div>
-                <button
-                  onClick={() => {
-                    history.push(`/admin/edit/${emp._id}`);
-                  }}>
-                  Modify
-                </button>
-                <button>Delete</button>
-              </div>
-            );
-          })}
+          {data.length > 1 &&
+            data.map(emp => {
+              if (!emp.admin) {
+                return (
+                  <div key={emp._id} className="employee">
+                    <div>{emp.username}</div>
+                    <div>{emp.email}</div>
+                    <div>
+                      <Link to={`/admin/reviews/${emp._id}`}>
+                        {reviews.reduce((count, r) => {
+                          if (r.user === emp._id) count += 1;
+                          return count;
+                        }, 0)}
+                      </Link>
+                    </div>
+                    <button
+                      className="modify"
+                      onClick={() => {
+                        history.push(`/admin/edit/${emp._id}`);
+                      }}>
+                      Modify
+                    </button>
+                    <button className="delete">Delete</button>
+                  </div>
+                );
+              }
+            })}
         </div>
       </div>
     </div>
   );
 };
 const mapStateToProps = ({ adminReducer }) => ({
-  data: adminReducer.employees
+  data: adminReducer.employees,
+  reviews: adminReducer.reviews
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchEmployees: () => dispatch(fetchEmployees())
+  fetchEmployees: () => dispatch(fetchEmployees()),
+  fetchReviewsAll: () => dispatch(fetchReviewsAll())
 });
 
 export default connect(

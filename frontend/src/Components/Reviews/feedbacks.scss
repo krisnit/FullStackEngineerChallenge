@@ -1,0 +1,21 @@
+.feedbacks{
+    .feebacks__header{
+        div{
+            border-bottom:1px solid purple;
+            
+        }
+        
+    }
+    h4{
+        display:inline-block;
+        border-bottom:1px solid purple;
+        margin-left:2rem;
+    }
+    div{
+        display:flex;
+        margin:.5rem 2rem;
+        width:40rem;
+        justify-content:centre;
+        }
+
+}

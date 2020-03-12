@@ -1,7 +1,8 @@
 import {
   FETCH_EMPLOYEES,
-  MODIFY_EMPLOYEES,
-  CREATE_EMPLOYEE
+  CREATE_EMPLOYEE,
+  CREATE_REVIEW,
+  FETCH_REVIEWS
 } from "../actions/types";
 const initialState = {
   employees: [],
@@ -15,18 +16,10 @@ const adminReducer = (state = initialState, action) => {
       return { ...state, employees: payload };
     case CREATE_EMPLOYEE:
       return { ...state, employees: [...state.employees, payload] };
-    case MODIFY_EMPLOYEES:
-      let employeeIndex = state.employees.findIndex(a => a.id === payload.id);
-      let modifiedEmployee = {
-        ...state.employees[employeeIndex],
-        ...payload
-      };
-      let modifiedEmployees = [
-        state.employees.slice(0, employeeIndex),
-        modifiedEmployee,
-        state.employees.slice(employeeIndex + 1)
-      ];
-      return { ...state, employees: modifiedEmployees };
+    case FETCH_REVIEWS:
+      return { ...state, reviews: payload };
+    case CREATE_REVIEW:
+      return { ...state, reviews: [...state.reviews, payload] };
     default:
       return state;
   }

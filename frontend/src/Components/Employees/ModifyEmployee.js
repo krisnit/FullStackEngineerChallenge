@@ -17,7 +17,7 @@ const ModifyEmployee = props => {
   const handleSubmit = e => {
     e.preventDefault();
     props.modifyEmployee(user);
-    props.history.push("/admin");
+    setTimeout(() => props.history.push("/admin"), 500);
   };
   return (
     <div>

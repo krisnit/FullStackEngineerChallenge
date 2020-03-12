@@ -9,6 +9,7 @@ import UserRoute from "./Components/Routing/UserRoute";
 import Admin from "./Components/Admin";
 import User from "./Components/User";
 import ModifyEmployee from "./Components/Employees/ModifyEmployee";
+import FetchReviews from "./Components/Reviews/FetchReviews";
 
 function App() {
   return (
@@ -24,8 +25,14 @@ function App() {
               path="/admin/edit/:id"
               component={ModifyEmployee}
             />
+            <AdminRoute
+              exact
+              path="/admin/reviews/:id"
+              component={FetchReviews}
+            />
             <AdminRoute exact path="/admin" component={Admin} />
-            <UserRoute exact path="/user" component={User} />
+
+            <UserRoute exact path="/user/:id" component={User} />
           </Switch>
         </section>
       </Router>

@@ -7,29 +7,16 @@ const userauth = require("../../middleware/userauth");
 
 //api/reviews - create a performance review
 router.post("/", adminauth, async (req, res) => {
-  let { achievements, innovation, user } = req.body;
+  let { user, comments, name, editors } = req.body;
   try {
     let getUser = await User.findById(user);
     if (!getUser) {
       return res.status(400).send({ msg: "No such user exists" });
     }
-    let reviews = await Reviews.find().select(["user", "isComplete"]);
-    // check if the user is already having a pending performce review .
-    if (
-      reviews.find(
-        ({ isComplete, user }) =>
-          user.toString() === req.body.user && !isComplete
-      )
-    ) {
-      return res
-        .status(400)
-        .send({ msg: "User already has one performance review pending" });
-    }
+    
     //if no performance review is pending then create new one
     let review = new Reviews({
-      user,
-      achievements,
-      innovation
+user, comments, name, editors 
     });
     await review.save();
     return res.status(200).send({ msg: "Review created successfully" });
@@ -90,40 +77,6 @@ router.put("/:id", adminauth, async (req, res) => {
   }
 });
 
-//api/reviews/editors/:id - who can comment on a review - only admin
-router.post("/editors/:id", async (req, res) => {
-  try {
-    let review = await Reviews.findById(req.params.id);
-    console.log(review.editors);
-    if (review.editors.length < 1) {
-      review.editors.push(req.body.user);
-    } else if (
-      review.editors.find(user => user.toString() === req.body.user).length ===
-      0
-    ) {
-      review.editors.push(req.body.user);
-    } else {
-      return res
-        .status(200)
-        .send({ msg: "User is already added to give feedback" });
-    }
-    await review.save();
-    return res.status(200).send({ msg: "Added user to give feedback" });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send({ msg: "server error" });
-  }
-});
 
-//api/reviews/editors/:id - who can comment on a review - only admin
-router.get("/editors/:id", async (req, res) => {
-  try {
-    let review = await Reviews.findById(req.params.id);
-    return res.status(200).send({ editors: review.editors });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send({ msg: "server error" });
-  }
-});
 
 module.exports = router;

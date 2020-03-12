@@ -1,6 +1,7 @@
 .employeelist {
   margin: 1rem;
   line-height: 1.5;
+  font-size: 1.1rem;
   .employeelist__main {
     display: flex;
     flex-direction: column;
@@ -8,14 +9,29 @@
       display: grid;
       grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
       align-items: center;
+      padding: 0.5rem;
+      border-bottom: 2px solid purple;
+      justify-items: center;
     }
     .employee {
       display: grid;
       grid-template-columns: 1.5fr 2fr 1fr 1fr 1fr;
       align-items: center;
-      padding: 1rem 0;
+      padding: 0.5rem;
+      justify-items: center;
       button {
-        width: 5rem;
+        width: 6rem;
+        border: none;
+        padding: 1rem;
+        border-radius: 15rem;
+      }
+      .modify {
+        background: rgb(73, 56, 226);
+        color: white;
+      }
+      .delete {
+        background: rgb(226, 132, 56);
+        color: white;
       }
       input {
         width: 13rem;

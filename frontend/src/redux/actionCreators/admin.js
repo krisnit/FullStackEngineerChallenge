@@ -1,7 +1,8 @@
 import {
   FETCH_EMPLOYEES,
-  MODIFY_EMPLOYEES,
-  CREATE_EMPLOYEE
+  CREATE_EMPLOYEE,
+  CREATE_REVIEW,
+  FETCH_REVIEWS
 } from "../actions/types";
 import axios from "axios";
 export const fetchEmployees = () => async dispatch => {
@@ -28,8 +29,9 @@ export const modifyEmployee = data => async dispatch => {
       modifiedUser,
       config
     );
-    console.log(emp);
-    dispatch({ type: MODIFY_EMPLOYEES, payload: { ...emp } });
+    if (emp) {
+      fetchEmployees();
+    }
   } catch (err) {
     console.log(err.message);
   }
@@ -46,7 +48,7 @@ export const createEmployee = data => async dispatch => {
   }
 };
 
-export const fetchReviews = id => async dispatch => {
+export const fetchReviewsUser = id => async dispatch => {
   let token = localStorage.getItem("token");
   let config = { headers: { "x-auth-token": token } };
   try {
@@ -55,6 +57,53 @@ export const fetchReviews = id => async dispatch => {
       config
     );
     console.log(results);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+export const fetchReviewsAll = () => async dispatch => {
+  let token = localStorage.getItem("token");
+  let config = {
+    headers: { "x-auth-token": token }
+  };
+  try {
+    let results = await axios.get("http://localhost:5000/api/reviews", config);
+    console.log(results);
+    dispatch({ type: FETCH_REVIEWS, payload: results.data.reviews });
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+export const addEditors = data=>dispatch=>{
+  
+let token = localStorage.getItem("token");
+  let config = {
+    headers: { "x-auth-token": token }
+  };
+  data.map(async d=>{
+    let editor={user:d.value}
+    try {
+    await axios.post(`http://localhost:5000/api/editors/${d.id}`,
+    editor, config);
+    let results = await axios.get("http://localhost:5000/api/reviews", config);
+    console.log(results);
+    dispatch({ type: FETCH_REVIEWS, payload: results.data.reviews });
+  } catch (err) {
+    console.log(err.message);
+  }
+  })
+  
+}
+
+export const createReview = data => async dispatch => {
+  let token = localStorage.getItem("token");
+  let config = { headers: { "x-auth-token": token } };
+  try {
+    await axios.post(`http://localhost:5000/api/reviews`, data, config);
+    let results = await axios.get("http://localhost:5000/api/reviews", config);
+    dispatch({ type: FETCH_REVIEWS, payload: results.data.reviews });
   } catch (err) {
     console.log(err.message);
   }

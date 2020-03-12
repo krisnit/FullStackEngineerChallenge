@@ -1,0 +1,35 @@
+.createemployee {
+  h1 {
+    display: inline-block;
+    border-bottom: 2px solid purple;
+  }
+  form {
+    div {
+      display: flex;
+      width: 25rem;
+      padding: 0.5rem;
+      line-height: 1.5;
+      align-items: center;
+      label {
+        width: 8rem;
+        height: 2rem;
+      }
+      input {
+        width: 15rem;
+        height: 2rem;
+        border: none;
+        border-bottom: 1px solid black;
+      }
+      .btn {
+        width: 8rem;
+        margin-left: auto;
+        height: 2.2rem;
+        border: none;
+        background: green;
+        font-size: 1.1rem;
+        color: white;
+        margin-top: 1rem;
+      }
+    }
+  }
+}

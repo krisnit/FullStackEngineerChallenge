@@ -19,7 +19,7 @@ const Index = props => {
     return <Redirect to="/admin" />;
   }
   if (props.auth.isAuthenticated) {
-    return <Redirect to="/user" />;
+    return <Redirect to={`/user/${props.auth.user}`} />;
   }
   return (
     <div>
