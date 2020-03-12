@@ -7,7 +7,7 @@ import {withRouter} from 'react-router-dom'
 // import "./CreateEmployee.scss";
 let initialState = {
   user: "",
-  comments: "",
+  instructions: "",
   name: "",
   editors: []
 };
@@ -18,12 +18,12 @@ const CreateReview = ({employees, createReview,match }) => {
   const handleChange = e => {
     setReview({ ...review, [e.target.name]: e.target.value });
   };
+  let user=employees.filter(({_id})=>(_id===match.params.id))
   React.useEffect(()=>{
-setReview({...review, user: match.params.id})
+setReview({...review, user: match.params.id, username:user[0].username})
   },[])
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(review,match.params.id,match)
     createReview(review);
     setReview(initialState);
   };
@@ -36,8 +36,8 @@ setReview({...review, user: match.params.id})
           <input onChange={handleChange} type="text" name="name" value={review.name}/>
         </div>
         <div>
-          <label forname="comments">Suggesstions or Comments</label>
-          <input onChange={handleChange} type="textarea" name="comments" value={review.comments} />
+          <label forname="instructions">Suggesstions or Instructions</label>
+          <input onChange={handleChange} type="textarea" name="instructions" value={review.instructions} />
         </div>
         <div>
           <label forname="editors">Ask feeback from Others</label>

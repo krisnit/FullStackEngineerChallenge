@@ -98,6 +98,7 @@ let token = localStorage.getItem("token");
 }
 
 export const createReview = data => async dispatch => {
+  console.log(data)
   let token = localStorage.getItem("token");
   let config = { headers: { "x-auth-token": token } };
   try {

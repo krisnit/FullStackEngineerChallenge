@@ -6,12 +6,16 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  comments: {
+  username:{
+    type:String
+  },
+  instructions: {
     type: String
   },
-  isComplete: { type: Boolean, default: false },
-  feedbacks: [],
-  editors: [],
+  comments: {
+    type: String, default:""
+  },
+  editors: [{value:{type:Schema.Types.ObjectId, ref:'users'}, label:{type:String},feedbacks:{type:String, default:""} }],
   createdAt: { type: Date, default: Date.now }
 });
 

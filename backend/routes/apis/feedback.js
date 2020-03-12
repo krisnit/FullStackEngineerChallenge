@@ -14,18 +14,6 @@ router.get("/:id", userauth, async (req, res) => {
   }
 });
 
-//api/feedbacks/:id - see all feedbacks for a performance review
-router.put("/:id", userauth, async (req, res) => {
-  try {
-    let review = await Reviews.findById(req.params.id);
-    let feedback = { user: req.user.id, feedback: req.body.feedback };
-    review.feedbacks.push(feedback);
-    await review.save();
-    return res.status(200).send({ msg: "feedback added" });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send({ msg: "internal server error" });
-  }
-});
+
 
 module.exports = router;

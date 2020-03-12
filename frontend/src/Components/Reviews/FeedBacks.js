@@ -14,9 +14,9 @@ const FeedBacks = ({feedbacks,employees}) => {
                 <div>Given By</div>
             </div>
             {feedbacks.map(fb=>(
-                <div key={fb._id}>
+                <div key={fb.value}>
                 <div>{fb.feedback}</div>
-                <div>{(employees.find(emp=>emp._id===fb.user)).username}</div>
+                <div>{fb.label}</div>
                 </div>
             ))}
         </div>

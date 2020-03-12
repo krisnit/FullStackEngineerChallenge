@@ -7,16 +7,15 @@ const userauth = require("../../middleware/userauth");
 
 //api/reviews - create a performance review
 router.post("/", adminauth, async (req, res) => {
-  let { user, comments, name, editors } = req.body;
+  let { user, instructions,username, name, editors } = req.body;
   try {
     let getUser = await User.findById(user);
     if (!getUser) {
       return res.status(400).send({ msg: "No such user exists" });
     }
     
-    //if no performance review is pending then create new one
     let review = new Reviews({
-user, comments, name, editors 
+user, instructions,username, name, editors
     });
     await review.save();
     return res.status(200).send({ msg: "Review created successfully" });
@@ -34,6 +33,47 @@ router.get("/:id", userauth, async (req, res) => {
       return res.status(404).send({ msg: "Post not found" });
     }
     return res.status(200).send({ review });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ msg: "server error" });
+  }
+});
+
+
+
+//api/reviews - get performance review by id
+router.get("/user/:id", userauth, async (req, res) => {
+  try {
+    let review = await Reviews.find({user:req.params.id});
+    if (!review) {
+      return res.status(404).send({ msg: "Post not found" });
+    }
+    return res.status(200).send({ review });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ msg: "server error" });
+  }
+});
+
+//api/reviews - get performance review by id
+router.get("/user/:id", userauth, async (req, res) => {
+  try {
+    let review = await Reviews.find({user:req.params.id});
+    if (!review) {
+      return res.status(404).send({ msg: "Post not found" });
+    }
+    return res.status(200).send({ review });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ msg: "server error" });
+  }
+});
+
+//api/reviews - get the reviews where user is a editor
+router.get("/editor/:id",  async (req, res) => {
+  try {
+    let feedback = await Reviews.find({editors:{$elemMatch:{value:req.params.id}}}, {name:1, editors:1,user:1})
+    return res.status(200).send({ feedback });
   } catch (err) {
     console.log(err);
     return res.status(500).send({ msg: "server error" });

@@ -1,15 +1,24 @@
-import { GET_REVIEWS, PENDING_FEEDBACKS } from "../actions/types";
+import { GET_REVIEWS_USER, PENDING_FEEDBACKS_USER } from "../actions/types";
 import axios from "axios";
 
-export const getReviews = () => async dispatch => {
+export const getReviews = (id) => async dispatch => {
   let token = localStorage.getItem("token");
   let config = { headers: { "x-auth-token": token } };
-  let user = await axios.get("http://localhost:5000/api/auth", config);
-  let id = user.data.user._id;
   let reviews = await axios.get(
-    `http://localhost:5000/api/reviews/${id}`,
+    `http://localhost:5000/api/reviews/user/${id}`,
     config
   );
-  console.log(reviews);
-  dispatch({ type: GET_REVIEWS, payload: reviews.data });
+  dispatch({ type: GET_REVIEWS_USER, payload: reviews.data });
 };
+
+export const pendingFeedbacks = (id) => async dispatch => {
+  let token = localStorage.getItem("token");
+  let config = { headers: { "x-auth-token": token } };
+  let reviews = await axios.get(
+    `http://localhost:5000/api/reviews/editor/${id}`,
+    config
+  );
+  dispatch({ type: PENDING_FEEDBACKS_USER, payload: reviews.data.feedback });
+};
+
+

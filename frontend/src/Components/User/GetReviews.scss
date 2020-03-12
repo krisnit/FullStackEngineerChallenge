@@ -1,0 +1,20 @@
+.getreviews{
+    margin:1rem;
+    div{
+        display:flex;
+        flex-direction:column;
+        textarea{
+            width:20rem
+        }
+        button{
+            margin-top:1rem;
+            width:8rem;
+            height:2rem;
+            background:darkgreen;
+            color:white;
+            border:none;
+            font-size:1.1rem;
+            border-radius:15rem;
+        }
+    }
+}

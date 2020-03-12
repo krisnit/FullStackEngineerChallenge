@@ -16,9 +16,8 @@ const FetchReviews = props => {
         <div key={review._id}>
         <Review id={review._id} name={review.name} comments={review.comments}
          />
-        {review.feedbacks.length >0 && 
-        <FeedBacks feedbacks={review.feedbacks}/>}
-        <AskFeedback reviewid={review._id} editors={review.editors}/>
+        {review.editors.length >0 && 
+        <FeedBacks feedbacks={review.editors}/>}
         </div>
       );
     }

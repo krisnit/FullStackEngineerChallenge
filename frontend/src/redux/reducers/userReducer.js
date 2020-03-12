@@ -4,11 +4,11 @@ const initialState = {
   feedbacks: []
 };
 
-const userReducer = (state = { initialState }, action) => {
+const userReducer = (state = initialState, action) => {
   let { type, payload } = action;
   switch (type) {
     case GET_REVIEWS_USER:
-      return { ...state, reviews: payload };
+      return { ...state, reviews: payload.review };
     case PENDING_FEEDBACKS_USER:
       return { ...state, feedbacks: payload };
     default:
